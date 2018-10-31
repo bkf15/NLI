@@ -1,4 +1,6 @@
 import re
+import nltk
+from nltk import bigrams
 #use tokenized data. It adds a space between words and punctuation, so when parsing words we won't get a comma/period
 # added to the end of a word. No conceivable advantage to using non-tokenized
 
@@ -25,6 +27,15 @@ for line in csv:
 		#get character n-gram data?
 		#get POS data?
 		#add data to our models
-	
+
+		#note that because we are using the tokenized responses, we do not need to worry about separating punctuation 
+		# from the words. Will probably just choose to ignore punctuation, but we'll see 
+
+		for l in response:
+			file_bigram = list(bigrams(l.split()))
+			print(file_bigram)
+		break
+
+
 
 

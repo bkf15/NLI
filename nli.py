@@ -1,4 +1,5 @@
 import re
+import os
 import nltk
 from nltk import bigrams
 
@@ -78,7 +79,34 @@ def getUniqueChars():
 		f.write(char + '\n')
 	f.close()
 
-getUniqueWords()
+
+#function to go through all the training documents and convert them to a document where each word appears
+# on a separate line. These files are stored in a directory called 'processed_data'. The files will have the same names,
+#Processed documents will be of the format:
+#    wordindex | actualword | POS 
+def processDocuments():
+	csv = open('TOEFL11-TRAIN/data/text/index-training.csv')
+	#if processed_data directory does not exist, create it 
+	if not os.path.exists('processed_data'):
+	    os.makedirs('processed_data')
+	#loop over all responses 
+	for line_in_list in csv:
+		response_info = re.split(',', line_in_list)
+		response_path_name = 'TOEFL11-TRAIN/data/text/responses/tokenized/' + response_info[0]
+		#go through each individual response file, create a new processed file, and write out each word
+		# from original file to different line 
+		with open(response_path_name) as response:
+			processed_file_name = 'processed_data/' + response_info[0]
+			processed_file = open(processed_file_name, 'w')
+			#split response into different words, write out each one on a different line 
+			word_list = re.sub("[^\w]", " ",  response.read()).split()
+			index = 0
+			for word in word_list:
+				processed_file.write(str(index) + '\t' + word + '\t\t' + 'POS' + '\n')
+				index += 1
+			processed_file.close()
+
+processDocuments()
 
 #md = setupTrainingData()
 #print(md[3][0])
@@ -91,8 +119,6 @@ getUniqueWords()
 # find max sentence length !!!!
 # 
 
-
-#write a random baseline, randomly select NL
 
 
 

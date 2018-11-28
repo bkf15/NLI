@@ -143,7 +143,7 @@ def doc_model_batch_gen(documents, labels, batch_size, vec):
 
             # y[i, j] is 1 if the ith document is labeled as language j
             # and 0 otherwise
-            y[seen + i, :] = np.array([1 if cl == labels[i] else 0 
+            y[i, :] = np.array([1 if cl == labels[seen + i] else 0 
                 for cl in const.classes.keys()])
 
         seen += batch_size

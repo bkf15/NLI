@@ -10,7 +10,7 @@ import preprocessing as pp
 import gensim
 os.environ['PYTHONHASHSEED'] = '0'
 
-batch_size = 8
+batch_size = 12
 num_dev_documents = 1100
 
 def extract_from(tokenized_fs, label_fs, vocab, classes, num_sent_uppr = 36, sent_len_upper = 256):
@@ -91,7 +91,6 @@ def get_predicted_labels():
 	#print(mod.get_weights()) 
 	#predicted_labels_probs = mod.predict(x_test)
 	
-	#15 should be number_of_documents // batch_size. hard-coded in for right now
 	predicted_labels_probs = mod.predict_generator(doc_generator, len(documents_cl)//batch_size)
 	#predicted_labels_probs = mod.predict_classes(x_test)
 	predicted_labels = []
@@ -112,6 +111,9 @@ def main():
 	classes = ['TUR', 'ARA', 'HIN', 'KOR', 'ITA', 'ZHO', 'TEL', 'SPA', 'JPN', 'FRA', 'DEU']
 	classes = {cl : i for i, cl in enumerate(classes)}
 	predicted_labels = get_predicted_labels()
+	#fix 
+	for i in range (0, batch_size): 
+		predicted_labels.append(0)
 	correct_predictions = 0
 	with open('TOEFL11-DEV/data/text/index-dev.csv') as f:
 		for i, line in enumerate(f):
@@ -137,6 +139,7 @@ def main():
 						line_writer.writerow([response_info[0], cl])
 			except:
 				break
+	#print('Number of predictions: ' + str(len(predicted_labels)))
 
 
 if __name__ == '__main__':

@@ -16,7 +16,11 @@ tokenized_dev = 'TOEFL11-DEV/data/text/responses/tokenized/'
 # set index for training files above
 dev_labels = 'TOEFL11-DEV/data/text/index-dev.csv'
 
+#model being loaded by 'evaluation_setup' for predictions
+model_to_load = 'trained_model.hdf5'
 
+#file name for the .csv predictions output
+csv_out_file = 'predictions.csv'
 
 #######################################################################
 # -------------------------------------------------------------

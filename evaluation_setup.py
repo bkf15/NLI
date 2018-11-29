@@ -9,6 +9,7 @@ import os
 import constants as const
 from model import extract_from, model_input
 
+
 #does the testing on the development set, returns an array with the predicted label for each piece of data 
 def get_predicted_labels():
 	#set up all the data. This will require calls to model_input and extract_from
@@ -22,8 +23,7 @@ def get_predicted_labels():
 	x_test, y_test = model_input(test_data, max_num_sentences, max_sentence_length, const.classes)
 
     #load the model from memory. Note that this will be the only line that needs to change if we change models 
-	mod = keras.models.load_model('trained_model.hdf5', custom_objects = {'tf':tf,'const':const})
-	#mod.load_weights('sent_test_model.h5')
+	mod = keras.models.load_model(const.model_to_load, custom_objects = {'tf':tf,'const':const})
 
 	#predicted labels is a NxM NUMpy matrix:
 	#	N = the number of data samples (100)
@@ -54,7 +54,7 @@ def main():
 				correct_predictions += 1
 
 	#export the predictions into a CSV file 
-	with open('predictions.csv', mode='w') as pred_file:
+	with open(const.csv_out_file, mode='w') as pred_file:
 		line_writer = csv.writer(pred_file, delimiter=',')
 		file_names = open(const.dev_labels)
 		for i, line in enumerate(file_names):

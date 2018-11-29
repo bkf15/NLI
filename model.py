@@ -154,18 +154,23 @@ def main():
               optimizer='rmsprop',
               metrics=['accuracy'])
     
-    # WAS USED TO SAVE UNTRAINED MODEL FOR CROSS VAL.
-    # model is saved with architecture, compile settings, and radnom weights
+    ########################################################################
+    # NOTE: (RE UNTRAINED MODEL)
+    # BELOW WAS USED TO SAVE UNTRAINED MODEL FOR CROSS VAL.
+    # model is saved with architecture, compile settings, and random weights
     # at this point it is untrained, training occurs below
+    ########################################################################
+    # CODE:
     # model.save('untrained_model_two.hdf5')
     # exit()
+    ########################################################################
 
     batch_size = 64
     num_epochs = 100
     patience = 10
     min_delta = .1
 
-    # only save best model for validation loss (from of early stopping to prevent overfitting)
+    # only save best model for validation loss (manual early stopping to prevent overfitting)
     # this way we can kill training when model seems to be overfitting and we have saved 
     # the best model (on validation data)
     checkpoint = keras.callbacks.ModelCheckpoint('sent_model_three_r.{epoch:02d}.hdf5',

@@ -14,11 +14,19 @@ from model import model_input
 
 def main():
 
+    # NOTE: (RE: FILEPATHS) 
+    # All relevant paths are clearly marked by comment blocks with a corresponding number:
+    # 1) filepaths to set directories/files for train and development data
+    # 2) filepath to set model to train. Defaults to an untrained model
+    #    built exactly like our turned in model.
+    # 3) filepath to specify where to save best model over all epochs
 
-    # NOTE: CHANGE FILE PATHS BELOW TO TRAIN A NEW MODEL
+
     # this script is set to use an untrained model built exactly as 
     # our original model (see second note)
-    ######################################################################
+    ##########################################################################
+    # (1) ######################################################################
+    ##########################################################################
     # set tokenized train to be a directory of tokenized files to train on
     tokenized_train = 'TOEFL11-TRAIN/data/text/responses/tokenized/'
     # set index for training files above
@@ -28,7 +36,9 @@ def main():
     tokenized_dev = 'TOEFL11-DEV/data/text/responses/tokenized/'
     # set index for training files above
     dev_labels = 'TOEFL11-DEV/data/text/index-dev.csv'
-    ######################################################################
+    ########################################################################
+    # (1) ####################################################################
+    ########################################################################
 
     # extract character indeces per sentence per document for training and development
     train, _, _ = extract_from(tokenized_train, train_labels, const.vocab, const.classes)
@@ -43,17 +53,39 @@ def main():
     x_train, y_train = model_input(train, max_num_sentences, max_sentence_length, const.classes)
     x_val, y_val = model_input(dev, max_num_sentences, max_sentence_length, const.classes)
 
+    ########################################################################
+    # (2) ####################################################################
+    ########################################################################
+
     # set model path here
     # use 'untrained_model.hdf5' to train a model from scratch
     # can also continue the training process of any other models
+    # see the NOTE: (RE UNTRAINED MODEL) in model.py
+    # to see how this model was created
+
     model_path = 'untrained_model.hdf5'
+
+    #########################################################################
+    # (2) #####################################################################
+    #########################################################################
 
     model = keras.models.load_model(model_path, custom_objects = {'tf' : tf})
 
-    # NOTE: THIS SAVES A NEWLY TRAINED MODEL
+    #########################################################################
+    # (3) #####################################################################
+    #########################################################################
+
     # modify this file path to avoid overwrites (across different validation runs) if needed
+
+    save_path = 'newly_trained_model.hdf5'
+
+    #########################################################################
+    # (3) #####################################################################
+    #########################################################################
+
+
     # this checkpoint will save the best model seen over all epochs (on validation data)
-    checkpoint = keras.callbacks.ModelCheckpoint('newly_trained_model.hdf5',
+    checkpoint = keras.callbacks.ModelCheckpoint(save_path,
         monitor = 'val_loss', save_best_only = True)
     
     batch_size = 64

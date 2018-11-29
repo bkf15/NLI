@@ -5,8 +5,8 @@ Anthony Sicilia
 Brian Falkenstein
 Yunkai Tang
 
-All code written for Python 3.6.5\\
-	-except evaluate.py, which was provided. This runs on python 2\\
+All code written for Python 3.6.5  
+	-except evaluate.py, which was provided. This runs on python 2
 
 Required Libraries\\
 	-Numpy 1.5.4\\

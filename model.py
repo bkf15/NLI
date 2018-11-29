@@ -5,8 +5,8 @@ import random as rd
 import string
 import os
 
-# What does this file do?
-# Builds, trains, and saves models
+# Q: What does this file do?
+# A: Builds, trains, and saves models
 # saves untrained model as well (currently commented out)
 ##########################################################################
 
@@ -23,7 +23,7 @@ def extract_from(tokenized_fs, label_fs, vocab, classes, num_sent_uppr = 36, sen
         max_sentence_length = min(max(np.max([len(s) for s in sentences]), max_sentence_length), sent_len_upper)
         documents += [[sentences, classes[labels[f]]]]
 
-    # USED TO DETERMINE UPPERBOUND ON SENTENCE LENGTH AND NUMBER OF SENTENCES FROM TRAINING DATA
+    # USED TO DETERMINE UPPERBOUNDs ON SENTENCE LENGTH AND NUMBER OF SENTENCES FROM TRAINING DATA
     ############################################################################################
         # slens += [len(s) for s in sentences]
     #     slens += [len(sentences)]
@@ -154,7 +154,9 @@ def main():
               optimizer='rmsprop',
               metrics=['accuracy'])
     
-    # USED TO SAVE UNTRAINED MODEL FOR CROSS VAL
+    # WAS USED TO SAVE UNTRAINED MODEL FOR CROSS VAL.
+    # model is saved with architecture, compile settings, and radnom weights
+    # at this point it is untrained, training occurs below
     # model.save('untrained_model_two.hdf5')
     # exit()
 
@@ -163,7 +165,7 @@ def main():
     patience = 10
     min_delta = .1
 
-    # only save best model for validation loss (form of early stopping to prevent overfitting)
+    # only save best model for validation loss (from of early stopping to prevent overfitting)
     # this way we can kill training when model seems to be overfitting and we have saved 
     # the best model (on validation data)
     checkpoint = keras.callbacks.ModelCheckpoint('sent_model_three_r.{epoch:02d}.hdf5',

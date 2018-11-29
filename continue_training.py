@@ -8,14 +8,16 @@ import constants as const
 from model import extract_from
 from model import model_input
 
-# What does this file do?
-# continues training (or starts training) models built with model.py
+# Q: What does this file do?
+# A: continues training (or starts training) models built with model.py
 ##########################################################################
 
 def main():
 
 
-    # CHANGE FILE PATHS BELOW
+    # NOTE: CHANGE FILE PATHS BELOW TO TRAIN A NEW MODEL
+    # this script is set to use an untrained model built exactly as 
+    # our original model (see second note)
     ######################################################################
     # set tokenized train to be a directory of tokenized files to train on
     tokenized_train = 'TOEFL11-TRAIN/data/text/responses/tokenized/'
@@ -43,20 +45,22 @@ def main():
 
     # set model path here
     # use 'untrained_model.hdf5' to train a model from scratch
-    # can also continue training any models terminated to early
+    # can also continue the training process of any other models
     model_path = 'untrained_model.hdf5'
 
     model = keras.models.load_model(model_path, custom_objects = {'tf' : tf})
 
-    # modify this file bath to avoid overwrites if needed
+    # NOTE: THIS SAVES A NEWLY TRAINED MODEL
+    # modify this file path to avoid overwrites (across different validation runs) if needed
     # this checkpoint will save the best model seen over all epochs (on validation data)
-    checkpoint = keras.callbacks.ModelCheckpoint('model.{epoch:02d}.hdf5',
+    checkpoint = keras.callbacks.ModelCheckpoint('newly_trained_model.hdf5',
         monitor = 'val_loss', save_best_only = True)
     
     batch_size = 64
 
     # modify this epoch number if needed, our best model took 32 epochs before gradually starting to overfit
-    # checkpoint callback will save model after each epoch where there is improvement on validation loss 
+    # checkpoint callback will save/overwrite model after each epoch where there is improvement on validation loss
+    # 35 epochs is about 6 hrs on  iMac, 3.3 GHz i7, 16 GB RAM 1867 MHz DDR3, Intel Iris Pro Graphics 6200 1536 MB
     num_epochs = 35
     
     model.fit(x_train, y_train,

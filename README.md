@@ -7,7 +7,7 @@ Yunkai Tang
 
 All code written for Python 3.6.5  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-except evaluate.py, which was provided. This runs on python 2
-
+q
 Required Libraries  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-Numpy 1.5.4  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-Tensorflow 1.12.0 (1.11.0)  

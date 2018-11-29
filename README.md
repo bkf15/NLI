@@ -16,3 +16,6 @@ Required Libraries
 For testing, change the file paths for the TOEFL-11 data in 'constants.py', then run 'evaluation_setup.py' to get the 'predictions.csv' file containing the model's predictions. 
 For cross validation / training the model, use 'continue_training.py'. The file paths must be set WITHIN 'continue_training.py'. 
 
+
+For our reference, current trained_model.hdf5 was trained for 32 epochs, using exactly the params in the model.py file
+

@@ -16,10 +16,18 @@ tokenized_dev = 'TOEFL11-DEV/data/text/responses/tokenized/'
 # set index for training files above
 dev_labels = 'TOEFL11-DEV/data/text/index-dev.csv'
 
-#model being loaded by 'evaluation_setup' for predictions
+# model being loaded by 'evaluation_setup' for predictions
+# defaults to our original trained model (32 epochs ~ 6 hours)
 model_to_load = 'trained_model.hdf5'
 
-#file name for the .csv predictions output
+# where to save best model over all epochs, for 'continue_training.py'
+save_path_for_model = 'newly_trained.hdf5'
+
+# model to load for training in 'continue_training.py'
+# defaults to untrained model built exactly as original
+model_to_train = 'untrained_model.hdf5'
+
+# file name for the .csv predictions output
 csv_out_file = 'predictions.csv'
 
 #######################################################################

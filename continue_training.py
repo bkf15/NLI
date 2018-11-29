@@ -9,7 +9,7 @@ from model import extract_from
 from model import model_input
 
 # What does this file do?
-# continues training (or starts training) models built using model.py
+# continues training (or starts training) models built with model.py
 ##########################################################################
 
 def main():
@@ -44,7 +44,7 @@ def main():
     # set model path here
     # use 'untrained_model.hdf5' to train a model from scratch
     # can also continue training any models terminated to early
-    model_path = 'trained_model.hdf5'
+    model_path = 'untrained_model.hdf5'
 
     model = keras.models.load_model(model_path, custom_objects = {'tf' : tf})
 

@@ -8,7 +8,6 @@ from tensorflow.keras.backend import manual_variable_initialization
 import os
 import constants as const
 from model import extract_from, model_input
-print(keras.__version__)
 
 #does the testing on the development set, returns an array with the predicted label for each piece of data 
 def get_predicted_labels():

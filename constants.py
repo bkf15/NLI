@@ -102,10 +102,12 @@ import string
 
 _vocabulary = set((list(string.ascii_letters) 
         + list(string.digits)
-        + list(string.punctuation)))
+        + list(string.punctuation))
+		+ list(' '))
 
 vocabulary = {c : i + 1 for i, c in enumerate(_vocabulary)}
 vocab = lambda c: vocabulary[c] if c in vocabulary else len(vocabulary) + 1
+
 vocab_len = len(vocabulary) + 2
 
 # Classes

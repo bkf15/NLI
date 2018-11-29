@@ -100,6 +100,9 @@ def main():
     ####################################################################################
 
     # Define model
+    # ideas for model architcture adpated from: 
+    # - Yoon Kim "Convolutional Neural Networks for Sentence Classification"
+    # - https://offbit.github.io/how-to-read/
     ####################################################################################
 
     # Characters are first embedded (keras uses a look-up table embedding)
@@ -117,7 +120,7 @@ def main():
     conv_out = []
 
     # Define conv arch.
-    # Conv architecture taken from Yoon Kim "Convolutional Neural Networks for Sentence Classification"
+    # Conv architecture adapted from Yoon Kim "Convolutional Neural Networks for Sentence Classification"
     # Each conv layer creates a representation of the sentence, 1d over temporal dimension
     # Global max pooling over time
     for filter_size, num in conv_layers:
@@ -135,7 +138,8 @@ def main():
     # use sentence model to get representation of each sentence in a document
     encoded = keras.layers.TimeDistributed(sent_encoder)(doc_input)
 
-    # bidirectional lstm over whole document
+    # bidirectional lstm over all sentences to form representation of whole document
+    # for softmax classification adapted from https://offbit.github.io/how-to-read/
     lstm_doc = keras.layers.Bidirectional(
         keras.layers.LSTM(128, dropout=0.15, recurrent_dropout=0.15))(encoded)
 

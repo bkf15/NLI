@@ -5,8 +5,8 @@ import random as rd
 import string
 import os
 
-# What does this file do?
-# Builds, trains, and saves models
+# Q: What does this file do?
+# A: Builds, trains, and saves models
 # saves untrained model as well (currently commented out)
 ##########################################################################
 
@@ -23,7 +23,7 @@ def extract_from(tokenized_fs, label_fs, vocab, classes, num_sent_uppr = 36, sen
         max_sentence_length = min(max(np.max([len(s) for s in sentences]), max_sentence_length), sent_len_upper)
         documents += [[sentences, classes[labels[f]]]]
 
-    # USED TO DETERMINE UPPERBOUND ON SENTENCE LENGTH AND NUMBER OF SENTENCES FROM TRAINING DATA
+    # USED TO DETERMINE UPPERBOUNDs ON SENTENCE LENGTH AND NUMBER OF SENTENCES FROM TRAINING DATA
     ############################################################################################
         # slens += [len(s) for s in sentences]
     #     slens += [len(sentences)]
@@ -100,6 +100,9 @@ def main():
     ####################################################################################
 
     # Define model
+    # ideas for model architcture adpated from: 
+    # - Yoon Kim "Convolutional Neural Networks for Sentence Classification"
+    # - https://offbit.github.io/how-to-read/
     ####################################################################################
 
     # Characters are first embedded (keras uses a look-up table embedding)
@@ -117,7 +120,7 @@ def main():
     conv_out = []
 
     # Define conv arch.
-    # Conv architecture taken from Yoon Kim "Convolutional Neural Networks for Sentence Classification"
+    # Conv architecture adapted from Yoon Kim "Convolutional Neural Networks for Sentence Classification"
     # Each conv layer creates a representation of the sentence, 1d over temporal dimension
     # Global max pooling over time
     for filter_size, num in conv_layers:
@@ -135,7 +138,8 @@ def main():
     # use sentence model to get representation of each sentence in a document
     encoded = keras.layers.TimeDistributed(sent_encoder)(doc_input)
 
-    # bidirectional lstm over whole document
+    # bidirectional lstm over all sentences to form representation of whole document
+    # for softmax classification adapted from https://offbit.github.io/how-to-read/
     lstm_doc = keras.layers.Bidirectional(
         keras.layers.LSTM(128, dropout=0.15, recurrent_dropout=0.15))(encoded)
 
@@ -150,16 +154,23 @@ def main():
               optimizer='rmsprop',
               metrics=['accuracy'])
     
-    # USED TO SAVE UNTRAINED MODEL FOR CROSS VAL
+    ########################################################################
+    # NOTE: (RE UNTRAINED MODEL)
+    # BELOW WAS USED TO SAVE UNTRAINED MODEL FOR CROSS VAL.
+    # model is saved with architecture, compile settings, and random weights
+    # at this point it is untrained, training occurs below
+    ########################################################################
+    # CODE:
     # model.save('untrained_model_two.hdf5')
     # exit()
+    ########################################################################
 
     batch_size = 64
     num_epochs = 100
     patience = 10
     min_delta = .1
 
-    # only save best model for validation loss (form of early stopping to prevent overfitting)
+    # only save best model for validation loss (manual early stopping to prevent overfitting)
     # this way we can kill training when model seems to be overfitting and we have saved 
     # the best model (on validation data)
     checkpoint = keras.callbacks.ModelCheckpoint('sent_model_three_r.{epoch:02d}.hdf5',

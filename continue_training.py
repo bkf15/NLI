@@ -15,7 +15,7 @@ from model import model_input
 def main():
 
     # NOTE: (RE: FILEPATHS) 
-    # All relevant paths are clearly marked by comment blocks with a corresponding number:
+    # All relevant info is marked by comment blocks with a corresponding number:
     # 1) filepaths to set directories/files for train and development data
     # 2) filepath to set model to train. Defaults to an untrained model
     #    built exactly like our turned in model.
@@ -26,23 +26,15 @@ def main():
     # Start (1) ######################################################################
     ##########################################################################
 
-    # set tokenized train to be a directory of tokenized files to train on
-    tokenized_train = 'TOEFL11-TRAIN/data/text/responses/tokenized/'
-    # set index for training files above
-    train_labels = 'TOEFL11-TRAIN/data/text/index-training.csv'
-
-    # set tokenized dev to be a directory of tokenized files for development
-    tokenized_dev = 'TOEFL11-DEV/data/text/responses/tokenized/'
-    # set index for training files above
-    dev_labels = 'TOEFL11-DEV/data/text/index-dev.csv'
+    # See filepaths in constants.py
 
     ########################################################################
     # End (1) ####################################################################
     ########################################################################
 
     # extract character indeces per sentence per document for training and development
-    train, _, _ = extract_from(tokenized_train, train_labels, const.vocab, const.classes)
-    dev, _, _ = extract_from(tokenized_dev, dev_labels, const.vocab, const.classes)
+    train, _, _ = extract_from(const.tokenized_train, const.train_labels, const.vocab, const.classes)
+    dev, _, _ = extract_from(const.tokenized_dev, const.dev_labels, const.vocab, const.classes)
 
     # these params are fixed now b/c model is finalized 
     # model expects the same input dimensions

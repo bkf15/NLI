@@ -8,6 +8,7 @@ from tensorflow.keras.backend import manual_variable_initialization
 import os
 import constants as const
 from model import extract_from, model_input
+print(keras.__version__)
 
 #does the testing on the development set, returns an array with the predicted label for each piece of data 
 def get_predicted_labels():
@@ -22,7 +23,7 @@ def get_predicted_labels():
 	x_test, y_test = model_input(test_data, max_num_sentences, max_sentence_length, const.classes)
 
     #load the model from memory. Note that this will be the only line that needs to change if we change models 
-	mod = keras.models.load_model('model.h5', custom_objects = {'tf':tf,'const':const})
+	mod = keras.models.load_model('trained_model.hdf5', custom_objects = {'tf':tf,'const':const})
 	#mod.load_weights('sent_test_model.h5')
 
 	#predicted labels is a NxM NUMpy matrix:

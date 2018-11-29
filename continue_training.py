@@ -55,8 +55,9 @@ def main():
     
     batch_size = 64
 
-    #modify this epoch number if needed, our best model took 32 epochs before gradually starting to overfit 
-    num_epochs = 100
+    # modify this epoch number if needed, our best model took 32 epochs before gradually starting to overfit
+    # checkpoint callback will save model after each epoch where there is improvement on validation loss 
+    num_epochs = 35
     
     model.fit(x_train, y_train,
           batch_size = batch_size, epochs = num_epochs,

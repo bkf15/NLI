@@ -8,6 +8,10 @@ import constants as const
 from model import extract_from
 from model import model_input
 
+# What does this file do?
+# continues training (or starts training) models built using model.py
+##########################################################################
+
 def main():
 
 

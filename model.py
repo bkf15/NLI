@@ -5,6 +5,11 @@ import random as rd
 import string
 import os
 
+# What does this file do?
+# Builds, trains, and saves models
+# saves untrained model as well (currently commented out)
+##########################################################################
+
 def extract_from(tokenized_fs, label_fs, vocab, classes, num_sent_uppr = 36, sent_len_upper = 256):
     labels = [l.split(',') for l in list(open(label_fs))]
     labels = {f : lb for f , _ , lb, _ in labels}

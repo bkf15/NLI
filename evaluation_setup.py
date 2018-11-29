@@ -7,39 +7,7 @@ import csv
 from tensorflow.keras.backend import manual_variable_initialization 
 import os
 import constants as const
-os.environ['PYTHONHASHSEED'] = '0'
-
-def extract_from(tokenized_fs, label_fs, vocab, classes, num_sent_uppr = 36, sent_len_upper = 256):
-    labels = [l.split(',') for l in list(open(label_fs))]
-    labels = {f : lb for f , _ , lb, _ in labels}
-    max_num_sentences = -1
-    max_sentence_length = -1
-    documents = []
-    slens = []
-    for f in labels:
-        sentences = [[vocab(c) for c in s.strip('\n')] for s in list(open(tokenized_fs + f))]
-        max_num_sentences = min(max(len(sentences), max_num_sentences), num_sent_uppr)
-        max_sentence_length = min(max(np.max([len(s) for s in sentences]), max_sentence_length), sent_len_upper)
-        documents += [[sentences, classes[labels[f]]]]
-    return documents, max_num_sentences, max_sentence_length
-
-def model_input(data, max_num_sentences, max_sentence_length, classes):
-    x = np.zeros((len(data), max_num_sentences, max_sentence_length), dtype = np.int64)
-    y = np.zeros((len(data), len(classes)))
-
-    for i, example in enumerate(data):
-        text = example[0]
-        label = example[1]
-        if len(text) > max_num_sentences:
-            text = text[(len(text) - max_num_sentences):]   # truncate to tail
-        for j, sentence in enumerate(text):
-            if len(sentence) > max_sentence_length:
-                sentence = sentence[(len(sentence) - max_sentence_length):]     #truncate to tail
-            for k, c in enumerate(sentence):
-                x[i,j,k] = c
-        y[i, :] = np.array([1 if int(cl) == int(label) else 0 for cl in  range(len(classes))])
-    return x, y
-
+from model import extract_from, model_input
 
 #does the testing on the development set, returns an array with the predicted label for each piece of data 
 def get_predicted_labels():
@@ -54,7 +22,7 @@ def get_predicted_labels():
 	x_test, y_test = model_input(test_data, max_num_sentences, max_sentence_length, const.classes)
 
     #load the model from memory. Note that this will be the only line that needs to change if we change models 
-	mod = keras.models.load_model('sent_model_three.h5', custom_objects = {'tf':tf,'const':const})
+	mod = keras.models.load_model('model.h5', custom_objects = {'tf':tf,'const':const})
 	#mod.load_weights('sent_test_model.h5')
 
 	#predicted labels is a NxM NUMpy matrix:
@@ -65,12 +33,10 @@ def get_predicted_labels():
 	predicted_labels_probs = mod.predict(x_test)
 	predicted_labels = []
 	#there is 100% a better, cleaner, faster way to do this
-	print(len(y_test))
-	exit()
 	for i in range(0, len(x_test)):
 		max_prob = 0
 		max_prob_label = 0
-		for j in range(0, 11):
+		for j in range(0, len(const.classes)):
 			if predicted_labels_probs[i,j] > max_prob:
 				max_prob = predicted_labels_probs[i,j]
 				max_prob_label = j
@@ -86,10 +52,9 @@ def main():
 			real_label = const.classes[response_info[2]]
 			if real_label == predicted_labels[i]:
 				correct_predictions += 1
-	#print('Correct predictions: ' + str(correct_predictions))
 
 	#export the predictions into a CSV file 
-	with open('dev_predictions.csv', mode='w') as pred_file:
+	with open('predictions.csv', mode='w') as pred_file:
 		line_writer = csv.writer(pred_file, delimiter=',')
 		file_names = open(const.dev_labels)
 		for i, line in enumerate(file_names):
